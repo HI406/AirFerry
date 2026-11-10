@@ -17,6 +17,8 @@ build/
 # Build output / release artifacts (published as GitHub Release assets,
 # never checked into git). See docs/build-browser.md.
 dist/
+# ESA Pages deployment assembly (sender dist + receiver dist-receiver).
+_site/
 # Standalone single-file web build output (apps/web/dist-standalone/).
 dist-standalone/
 # Web receiver build output (apps/web/dist-receiver/ — separate zip from sender).
@@ -99,3 +101,4 @@ __pycache__/
 *.egg-info/
 apps/python/python/airferry/*.pyd
 apps/python/python/airferry/*.so
+.env

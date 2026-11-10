@@ -1,7 +1,8 @@
 # GitHub Pages 部署：web 发送端 + web 接收端
 #
 # 产物结构（单站点、相对 base，均可在子路径工作）：
-#   /                    → 发送端（index.html，来自 apps/web/dist）
+#   /                    → 首页（导航页，来自 apps/web/landing）
+#   /sender/             → 发送端（index.html，来自 apps/web/dist）
 #   /receiver/           → 接收端（receiver.html 改名 index.html，来自 apps/web/dist-receiver）
 #
 # web 构建复用 sender 的 WASM 产物（wasm-pkg-simd），因此本 workflow 需先在
@@ -98,9 +99,11 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf _site
-          mkdir -p _site/receiver
-          # 发送端 → 站点根
-          cp -r apps/web/dist/. _site/
+          mkdir -p _site/sender _site/receiver
+          # 首页 → 站点根（导航页：发送端 / 接收端入口 + 单文件版下载）
+          cp apps/web/landing/index.html _site/index.html
+          # 发送端 → /sender/
+          cp -r apps/web/dist/. _site/sender/
           # 接收端 → /receiver/（receiver.html 作为该子路径的 index）
           cp -r apps/web/dist-receiver/. _site/receiver/
           mv _site/receiver/receiver.html _site/receiver/index.html
@@ -108,8 +111,8 @@ jobs:
           cp apps/web/dist-standalone/index.html _site/sender-standalone.html
           cp apps/web/dist-receiver-standalone/index.html _site/receiver-standalone.html
           # 发送端产物不含 zxing_reader.wasm；接收端已带，无需从发送端清。
-          # 但发送端根目录可能混入接收端 wasm 的旧文件，确保干净：
-          rm -f _site/zxing_reader.wasm
+          # 但发送端目录可能混入接收端 wasm 的旧文件，确保干净：
+          rm -f _site/sender/zxing_reader.wasm
 
       - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
 
@@ -119,3 +122,17 @@ jobs:
 
       - id: deploy
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
+
+      # 把同一份 _site 发布到阿里云 ESA 边缘节点（Assets 模式，routine: airferry）。
+      # 已绑定域名（air.weiqingyuan.com / air.surl.vip）免 token 访问；
+      # 凭证走仓库 Secrets（ALIBABA_CLOUD_ACCESS_KEY_ID / ALIBABA_CLOUD_ACCESS_KEY_SECRET），
+      # 本地部署见 scripts/esa-deploy/deploy-esa.mjs 头注释。
+      # 置于 Pages 部署之后：ESA 失败不影响 Pages 发布，仅令本 job 变红提示。
+      - name: Deploy to Alibaba Cloud ESA
+        working-directory: scripts/esa-deploy
+        env:
+          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
+          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+        run: |
+          npm ci
+          node deploy-esa.mjs airferry ../../../_site "AirFerry web sender + receiver (CI, ${GITHUB_SHA::7})"

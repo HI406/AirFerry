@@ -1,0 +1,14 @@
+{
+  "name": "@airferry/esa-deploy",
+  "version": "1.2.9",
+  "private": true,
+  "type": "module",
+  "description": "Deploy the assembled _site to Alibaba Cloud ESA Functions & Pages (assets mode).",
+  "dependencies": {
+    "@alicloud/credentials": "2.4.4",
+    "@alicloud/esa20240910": "2.43.0",
+    "@alicloud/openapi-client": "0.4.15",
+    "@alicloud/tea-util": "1.4.9",
+    "jszip": "3.10.1"
+  }
+}

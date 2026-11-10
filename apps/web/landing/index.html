@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AirFerry · 通过屏幕二维码视频流，无网传输文件到手机。无需网络、蓝牙、USB。" />
+  <link rel="icon" type="image/png" href="./favicon-sender.png" />
+  <title>AirFerry · 无网文件传输</title>
+  <style>
+    :root {
+      --color-primary: #2563eb;
+      --color-primary-light: #eff6ff;
+      --color-primary-ring: rgba(37, 99, 235, 0.16);
+      --color-bg: #f4f6fb;
+      --color-card: #ffffff;
+      --color-text: #0f172a;
+      --color-text-secondary: #5b6474;
+      --color-text-muted: #9099a8;
+      --color-border: #e3e8f0;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12), 0 4px 10px rgba(15, 23, 42, 0.05);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 28px 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .brand svg { width: 44px; height: 44px; }
+    .brand h1 { font-size: 28px; letter-spacing: -0.5px; }
+    .tagline { color: var(--color-text-secondary); font-size: 15px; margin-bottom: 40px; text-align: center; }
+    .cards { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 240px;
+      padding: 36px 24px 30px;
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      color: var(--color-text);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--color-primary);
+    }
+    .card:active { transform: translateY(-1px); }
+    .card:focus-visible { outline: 3px solid var(--color-primary-ring); outline-offset: 2px; }
+    .card-ico {
+      width: 72px;
+      height: 72px;
+      border-radius: 9999px;
+      background: var(--color-primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-ico svg { width: 36px; height: 36px; color: var(--color-primary); }
+    .card h2 { font-size: 19px; }
+    .card p { font-size: 13px; color: var(--color-text-secondary); text-align: center; line-height: 1.6; }
+    .card .go {
+      margin-top: 6px;
+      padding: 8px 22px;
+      border-radius: 9999px;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .footer { margin-top: 48px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .footer-label { font-size: 12px; color: var(--color-text-muted); }
+    .footer-links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .footer-links a {
+      padding: 6px 16px;
+      border-radius: 9999px;
+      border: 1px solid var(--color-border);
+      background: var(--color-card);
+      color: var(--color-text-secondary);
+      font-size: 13px;
+      text-decoration: none;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    .footer-links a:hover { border-color: var(--color-primary); color: var(--color-primary); }
+  </style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="2" y="4" width="20" height="14" rx="2"/>
+      <path d="M8 21h8M12 18v3"/>
+      <path d="M7 8h4M7 11h2"/>
+      <path d="M13.5 8.5h3M13.5 11.5h3M13.5 14.5h1.5" stroke-width="2.4"/>
+    </svg>
+    <h1>AirFerry</h1>
+  </div>
+  <p class="tagline">通过屏幕二维码视频流，无网传输文件。无需网络、蓝牙、USB。</p>
+
+  <div class="cards">
+    <a class="card" href="./sender/">
+      <div class="card-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 16V4M12 4l-4 4M12 4l4 4"/>
+          <path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
+        </svg>
+      </div>
+      <h2>发送端</h2>
+      <p>在电脑上选择文件，<br/>编码为二维码视频流播放</p>
+      <span class="go">开始发送</span>
+    </a>
+    <a class="card" href="./receiver/">
+      <div class="card-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+          <rect x="8.5" y="8.5" width="7" height="7" rx="1"/>
+        </svg>
+      </div>
+      <h2>接收端</h2>
+      <p>用手机摄像头对准屏幕，<br/>扫码还原文件</p>
+      <span class="go">开始接收</span>
+    </a>
+  </div>
+
+  <div class="footer">
+    <span class="footer-label">单文件版 · 下载后双击即用，无需服务器</span>
+    <div class="footer-links">
+      <a href="./sender-standalone.html" download>发送端单文件版</a>
+      <a href="./receiver-standalone.html" download>接收端单文件版</a>
+    </div>
+  </div>
+</body>
+</html>
